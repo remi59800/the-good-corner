@@ -3,7 +3,7 @@ import { Layout } from '@/components/Layout';
 import { API_URL } from '@/config';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 
 type AdFormData = {
   title: string;
@@ -18,9 +18,8 @@ type AdFormData = {
 
 export default function NewAd() {
   const [categories, setCategories] = useState<CategoryProps[]>([]);
-  const [error, setError] = useState<"title" | "price">();
+  const [error, setError] = useState<'title' | 'price'>();
   const [hasBeenSent, setHasBeenSent] = useState(false);
-
 
   const fetchCategories = async () => {
     try {
@@ -53,13 +52,13 @@ export default function NewAd() {
     data.price = Number(data.price);
 
     if (data.title.trim().length < 3) {
-      setError("title");
+      setError('title');
     } else if (data.price < 0) {
-      setError("price");
+      setError('price');
     } else {
       const result = await axios.post(`${API_URL}/ads`, data);
-      console.log("data sent :", result.data)
-      if ("id" in result.data) {
+      console.log('data sent :', result.data);
+      if ('id' in result.data) {
         form.reset();
         toast.success(`Votre offre a bien été envoyée`, {
           position: 'bottom-center',
@@ -69,7 +68,7 @@ export default function NewAd() {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-      });
+        });
         setHasBeenSent(true);
         // redirect to /ads/result.data.id
       }
