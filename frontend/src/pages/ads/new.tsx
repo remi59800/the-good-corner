@@ -3,7 +3,6 @@ import { Layout } from '@/components/Layout';
 import { API_URL } from '@/config';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 
 type AdFormData = {
   title: string;
@@ -60,17 +59,6 @@ export default function NewAd() {
       console.log('data sent :', result.data);
       if ('id' in result.data) {
         form.reset();
-        toast.success(`Votre offre a bien été envoyée`, {
-          position: 'bottom-center',
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        setHasBeenSent(true);
-        // redirect to /ads/result.data.id
       }
     }
   };
