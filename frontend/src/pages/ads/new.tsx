@@ -1,8 +1,9 @@
 import { CategoryProps } from '@/components/Category';
 import { Layout } from '@/components/Layout';
-import { APP_URL } from '@/config';
+import { API_URL } from '@/config';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import {toast} from 'react-toastify';
 
 type AdFormData = {
   title: string;
@@ -17,10 +18,13 @@ type AdFormData = {
 
 export default function NewAd() {
   const [categories, setCategories] = useState<CategoryProps[]>([]);
+  const [error, setError] = useState<"title" | "price">();
+  const [hasBeenSent, setHasBeenSent] = useState(false);
+
 
   const fetchCategories = async () => {
     try {
-      const result = await axios.get<CategoryProps[]>(APP_URL + '/categories');
+      const result = await axios.get<CategoryProps[]>(API_URL + '/categories');
       setCategories(result.data);
     } catch (err) {
       console.log(err, 'error');
@@ -31,11 +35,11 @@ export default function NewAd() {
     fetchCategories();
   }, []);
 
-  const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
+  const submitForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    const form = event.target;
-    const formData = new FormData(form as HTMLFormElement);
+    setError(undefined);
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData(form);
 
     const data: AdFormData = Object.fromEntries(
       formData.entries()
@@ -46,8 +50,30 @@ export default function NewAd() {
       delete data.categoryId;
     }
 
-    console.log('avant post', data);
-    axios.post(APP_URL + '/ads', data);
+    data.price = Number(data.price);
+
+    if (data.title.trim().length < 3) {
+      setError("title");
+    } else if (data.price < 0) {
+      setError("price");
+    } else {
+      const result = await axios.post(`${API_URL}/ads`, data);
+      console.log("data sent :", result.data)
+      if ("id" in result.data) {
+        form.reset();
+        toast.success(`Votre offre a bien été envoyée`, {
+          position: 'bottom-center',
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+      });
+        setHasBeenSent(true);
+        // redirect to /ads/result.data.id
+      }
+    }
   };
 
   return (

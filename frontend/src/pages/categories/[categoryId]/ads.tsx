@@ -1,6 +1,6 @@
 import { AdCard, AdCardProps } from '@/components/AdCard';
 import { Layout } from '@/components/Layout';
-import { APP_URL } from '@/config';
+import { API_URL } from '@/config';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -17,7 +17,7 @@ export default function AdsFromCategory() {
       if (categoryId) {
         console.log(categoryId);
         const result = await axios.get<AdCardProps[]>(
-          `${APP_URL}/categories/${categoryId}/ads`
+          `${API_URL}/categories/${categoryId}/ads`
         );
 
         setAds(result.data);

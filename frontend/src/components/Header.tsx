@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { CategoryProps } from './Category';
 import { Category } from './Category';
-import { APP_URL } from '@/config';
+import { API_URL } from '@/config';
 import axios from 'axios';
 
 export const Header = () => {
@@ -10,7 +10,7 @@ export const Header = () => {
 
   const fetchCategories = async () => {
     try {
-      const result = await axios.get<CategoryProps[]>(APP_URL + '/categories');
+      const result = await axios.get<CategoryProps[]>(API_URL + '/categories');
       setCategories(result.data);
     } catch (err) {
       console.log(err, 'error');

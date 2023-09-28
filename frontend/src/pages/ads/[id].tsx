@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { AdCardProps } from '@/components/AdCard';
 import axios from 'axios';
-import { APP_URL } from '@/config';
+import { API_URL } from '@/config';
 
 export default function AdDetails() {
   const [ad, setAd] = useState<AdCardProps>();
@@ -14,7 +14,7 @@ export default function AdDetails() {
   const fetchAd = async () => {
     try {
       if (adId) {
-        const result = await axios.get<AdCardProps>(`${APP_URL}/ads/${adId}`);
+        const result = await axios.get<AdCardProps>(`${API_URL}/ads/${adId}`);
         setAd(result.data);
       }
     } catch (err) {
