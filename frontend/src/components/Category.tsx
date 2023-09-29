@@ -1,16 +1,15 @@
 import React from 'react';
+import Link from 'next/link';
 
 export type CategoryProps = {
   id: number;
   name: string;
 };
 
-export const Category = ({ name }: CategoryProps) => {
+export const Category = ({ id, name }: CategoryProps) => {
   return (
-    <>
-      <a href='' className='category-navigation-link'>
-        {name}
-      </a>
-    </>
+    <Link href={`/categories/${id}/ads`} className='category-navigation-link'>
+      {name}
+    </Link>
   );
 };

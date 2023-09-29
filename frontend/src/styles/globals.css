@@ -64,7 +64,7 @@ h1 {
 
 .button-submit {
   min-width: 40px;
-  width: 80px;
+  width: 120px;
   height: 40px;
   padding: 8px;
   border-radius: 8px;
@@ -162,6 +162,41 @@ h1 {
   background-color: white;
 }
 
+.ad-details-card-container {
+  border-radius: 8px;
+  border: 1px solid lightgray;
+  color: inherit;
+  background-color: white;
+  width: 80%;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title-description {
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.title-localisation {
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.description-product {
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.description-localisation {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
 .ad-card-link {
   text-decoration: inherit;
   color: inherit;
@@ -172,6 +207,14 @@ h1 {
   height: 250px;
   object-fit: cover;
   object-position: bottom;
+  border-radius: 8px;
+}
+
+.ad-details-card-image {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  object-position: center;
   border-radius: 8px;
 }
 
@@ -196,8 +239,20 @@ h1 {
 }
 
 .ad-details {
-  display: grid;
-  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.ad-card-details-first-infos {
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ad-card-detail-title {
+  font-size: 24px;
+  font-weight: 600;
 }
 
 @media screen and (min-width: 720px) {

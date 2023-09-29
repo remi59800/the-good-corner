@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { AdCard, AdCardProps } from './AdCard';
+import { AdCard, AdCardType } from './AdCard';
 import axios from 'axios';
 import { API_URL } from '@/config';
 
 export const RecentAds = () => {
-  const [ads, setAds] = useState<AdCardProps[]>([]);
+  const [ads, setAds] = useState<AdCardType[]>([]);
 
   const fetchAds = async () => {
     try {
-      const result = await axios.get<AdCardProps[]>(API_URL + '/ads');
+      const result = await axios.get<AdCardType[]>(API_URL + '/ads');
       setAds(result.data);
-      console.log(result.data);
     } catch (err) {
       console.log(err, 'error');
     }
@@ -38,7 +37,6 @@ export const RecentAds = () => {
               title={ad.title}
               picture={ad.picture}
               price={ad.price}
-              link={ad.link}
             ></AdCard>
             <button
               className='button'

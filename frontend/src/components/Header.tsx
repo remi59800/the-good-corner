@@ -46,10 +46,10 @@ export const Header = () => {
             </svg>
           </button>
         </form>
-        <a href='/ads/new' className='button link-button'>
+        <Link href='/ads/new' className='button link-button'>
           <span className='mobile-short-label'>Publier</span>
           <span className='desktop-long-label'>Publier une annonce</span>
-        </a>
+        </Link>
       </div>
       <nav className='categories-navigation'>
         {categories.map((category, index) => (

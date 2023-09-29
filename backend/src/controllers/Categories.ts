@@ -25,7 +25,7 @@ export class CategoriesController extends Controller {
     }
   };
 
-  getAllWithFilter = async (req: Request, res: Response) => {
+  getAdsFromCategory = async (req: Request, res: Response) => {
     try {
       const categoryId = Number(req.params.id);
 

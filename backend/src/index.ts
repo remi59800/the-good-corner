@@ -26,7 +26,7 @@ app.delete('/ads/:id', adsController.deleteOne);
 const categoriesController = new CategoriesController();
 app.get('/categories', categoriesController.getAll);
 app.get('/categories/:id', categoriesController.getOne);
-app.get('/categories/:id/ads', categoriesController.getAllWithFilter);
+app.get('/categories/:id/ads', categoriesController.getAdsFromCategory);
 app.post('/categories', categoriesController.createOne);
 app.put('/categories/:id', categoriesController.updateOne);
 app.patch('/categories/:id', categoriesController.patchOne);

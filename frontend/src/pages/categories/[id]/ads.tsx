@@ -1,27 +1,21 @@
-import { AdCard, AdCardProps } from '@/components/AdCard';
-import { Layout } from '@/components/Layout';
+import { AdCard, AdCardType } from '@/components/AdCard';
 import { API_URL } from '@/config';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 export default function AdsFromCategory() {
-  const [ads, setAds] = useState<AdCardProps[]>([]);
+  const [ads, setAds] = useState<AdCardType[]>([]);
 
   const router = useRouter();
   const categoryId = Number(router.query.id);
 
   const fetchAdsFromCategory = async () => {
     try {
-      console.log(categoryId);
-      if (categoryId) {
-        console.log(categoryId);
-        const result = await axios.get<AdCardProps[]>(
-          `${API_URL}/categories/${categoryId}/ads`
-        );
-
-        setAds(result.data);
-      }
+      const result = await axios.get<AdCardType[]>(
+        `${API_URL}/categories/${categoryId}/ads`
+      );
+      setAds(result.data);
     } catch (err) {
       console.log(err, 'error');
     }
@@ -29,23 +23,24 @@ export default function AdsFromCategory() {
 
   useEffect(() => {
     fetchAdsFromCategory();
-  }, []);
+  }, [categoryId]);
 
   return (
-    <Layout title='Ad'>
-      <section className='recent-ads'>
-        {ads.map((ad) => (
+    <section className='recent-ads'>
+      {ads.length > 0 ? (
+        ads.map((ad) => (
           <div key={ad.id}>
             <AdCard
               id={ad.id}
               title={ad.title}
               picture={ad.picture}
               price={ad.price}
-              link={ad.link}
             ></AdCard>
           </div>
-        ))}
-      </section>
-    </Layout>
+        ))
+      ) : (
+        <h3>Pas d'offres dans cette catégorie pour le moment. </h3>
+      )}
+    </section>
   );
 }

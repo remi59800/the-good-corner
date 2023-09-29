@@ -33,7 +33,7 @@ content-Type: application/json
 
 ###
 
-DELETE http://localhost:3001/ads/3
+DELETE http://localhost:3001/ads/14
 
 ###
 
@@ -45,7 +45,7 @@ GET http://localhost:3001/categories/1
 
 ###
 
-GET http://localhost:3001/categories/5/ads
+GET http://localhost:3001/categories/7/ads
 
 ###
 
