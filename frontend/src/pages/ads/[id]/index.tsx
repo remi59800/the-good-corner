@@ -1,26 +1,22 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { AdCardType } from '@/components/AdCard';
+import { AdType } from '@/components/AdCard';
 import axios from 'axios';
 import { API_URL } from '@/config';
 
 export default function AdDetails() {
-  const [ad, setAd] = useState<AdCardType>();
+  const [ad, setAd] = useState<AdType>();
 
   const router = useRouter();
   const adId = Number(router.query.id);
 
   const fetchAd = async () => {
-    try {
-      if (adId) {
-        const result = await axios.get<AdCardType>(`${API_URL}/ads/${adId}`);
-        setAd(result.data);
-      }
-    } catch (err) {
-      console.log(err, 'error');
+    if (adId) {
+      const result = await axios.get<AdType>(`${API_URL}/ads/${adId}`);
+      setAd(result.data);
     }
   };
-
   useEffect(() => {
     fetchAd();
   }, [adId]);
@@ -32,11 +28,13 @@ export default function AdDetails() {
       await axios.delete(`${API_URL}/ads/${ad.id}`);
     }
 
-    router.push(`http://localhost:3000`);
+    router.push(API_URL);
   };
 
   const updateAd = () => {
-    router.push(`http://localhost:3000/ads/new`);
+    if (ad) {
+      router.push(`/ads/${ad.id}/edit`);
+    }
   };
 
   return (

@@ -1,4 +1,5 @@
-import { AdCard, AdCardType } from '@/components/AdCard';
+/* eslint-disable react/no-unescaped-entities */
+import { AdCard, AdCardType, AdType } from '@/components/AdCard';
 import { API_URL } from '@/config';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -12,7 +13,7 @@ export default function AdsFromCategory() {
 
   const fetchAdsFromCategory = async () => {
     try {
-      const result = await axios.get<AdCardType[]>(
+      const result = await axios.get<AdType[]>(
         `${API_URL}/categories/${categoryId}/ads`
       );
       setAds(result.data);

@@ -1,24 +1,28 @@
 import { API_URL } from '@/config';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-export type AdCardType = {
+export type AdType = {
   id: number;
   title: string;
-  owner?: string;
-  description?: string;
+  owner: string;
+  description: string;
   picture: string;
-  location?: string;
+  location: string;
   price: number;
   category?: { id: number } | null;
 };
+
+export type AdCardType = Pick<
+  AdType,
+  'id' | 'title' | 'picture' | 'price' | 'category'
+>;
 
 export const AdCard = ({ id, title, picture, price }: AdCardType) => {
   // Afficher les détails d'une offre
   const router = useRouter();
   const displayAdDetails = async () => {
-    router.push(`http://localhost:3000/ads/${id}`);
+    router.push(`${API_URL}/ads/${id}`);
   };
 
   return (

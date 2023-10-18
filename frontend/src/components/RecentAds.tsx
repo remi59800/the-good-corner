@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { AdCard, AdCardType } from './AdCard';
+import { AdCard, AdType } from './AdCard';
 import axios from 'axios';
 import { API_URL } from '@/config';
 
 export const RecentAds = () => {
-  const [ads, setAds] = useState<AdCardType[]>([]);
+  const [ads, setAds] = useState<AdType[]>([]);
 
   const fetchAds = async () => {
     try {
-      const result = await axios.get<AdCardType[]>(API_URL + '/ads');
+      const result = await axios.get<AdType[]>(API_URL + '/ads');
       setAds(result.data);
     } catch (err) {
       console.log(err, 'error');
