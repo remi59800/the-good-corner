@@ -10,9 +10,9 @@ export class Controller {
     this.notImplemented(req, res);
   };
 
-  getAllWithFilter = (req: Request, res: Response) => {
-    this.notImplemented(req, res);
-  };
+  // getAllWithFilter = (req: Request, res: Response) => {
+  //   this.notImplemented(req, res);
+  // };
 
   createOne = (req: Request, res: Response) => {
     this.notImplemented(req, res);
