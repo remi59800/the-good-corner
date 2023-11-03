@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
-import { Ad } from './Ad';
-import { Category } from './Category';
-import { Tag } from './Tag';
+import { Ad } from './entities/Ad';
+import { Category } from './entities/Category';
+import { Tag } from './entities/Tag';
 
 export const dataSource = new DataSource({
   type: 'sqlite',
