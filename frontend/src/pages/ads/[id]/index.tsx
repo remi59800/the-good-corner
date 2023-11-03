@@ -4,31 +4,39 @@ import React, { useEffect, useState } from 'react';
 import { AdType } from '@/components/AdCard';
 import axios from 'axios';
 import { API_URL } from '@/config';
+import { useMutation, useQuery } from '@apollo/client';
+import { mutationDeleteAd } from '@/graphql/mutationDeleteAd';
+import { queryAd } from '@/graphql/queryAd';
+import { queryAllAds } from '@/graphql/queryAllAds';
 
 export default function AdDetails() {
-  const [ad, setAd] = useState<AdType>();
-
   const router = useRouter();
   const adId = Number(router.query.id);
 
-  const fetchAd = async () => {
-    if (adId) {
-      const result = await axios.get<AdType>(`${API_URL}/ads/${adId}`);
-      setAd(result.data);
+  const { data } = useQuery<{ item: AdType }>(queryAd, {
+    variables: {
+      id: adId,
+    },
+    skip: adId === undefined,
+  });
+  const ad = data ? data.item : null;
+
+  //Delete d'une ad
+  const [doDelete, { data: deleteData, error, loading }] = useMutation(
+    mutationDeleteAd,
+    {
+      refetchQueries: [queryAllAds],
     }
-  };
-  useEffect(() => {
-    fetchAd();
-  }, [adId]);
+  );
 
   const deleteAd = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-
-    if (ad && ad.id) {
-      await axios.delete(`${API_URL}/ads/${ad.id}`);
-    }
-
-    router.push(API_URL);
+    // event.stopPropagation();
+    await doDelete({
+      variables: {
+        id: adId,
+      },
+    });
+    // router.push(API_URL);
   };
 
   const updateAd = () => {

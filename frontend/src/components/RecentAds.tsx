@@ -2,22 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { AdCard, AdType } from './AdCard';
 import axios from 'axios';
 import { API_URL } from '@/config';
+import { queryAllAds } from '@/graphql/queryAllAds';
+import { useQuery } from '@apollo/client';
 
 export const RecentAds = () => {
-  const [ads, setAds] = useState<AdType[]>([]);
-
-  const fetchAds = async () => {
-    try {
-      const result = await axios.get<AdType[]>(API_URL + '/ads');
-      setAds(result.data);
-    } catch (err) {
-      console.log(err, 'error');
-    }
-  };
-
-  useEffect(() => {
-    fetchAds();
-  }, []);
+  const { data, error, loading } = useQuery<{ items: AdType[] }>(queryAllAds);
+  const ads = data ? data.items : [];
 
   const [totalPrice, setTotalPrice] = useState(0);
   const addToTotalPrice = (price: number) => {

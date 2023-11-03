@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { CategoryProps } from './Category';
+import { CategoryType } from './Category';
 import axios from 'axios';
 import { API_URL } from '@/config';
 import { useRouter } from 'next/router';
@@ -13,7 +13,7 @@ type AdFormProps = {
 };
 
 export const AdForm = ({ ad }: AdFormProps) => {
-  const [categories, setCategories] = useState<CategoryProps[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
   const [error, setError] = useState<'title' | 'price'>();
 
   const [title, setTitle] = useState('');
@@ -27,7 +27,7 @@ export const AdForm = ({ ad }: AdFormProps) => {
   // fetch des categories pour la liste déroulante
   const fetchCategories = async () => {
     try {
-      const result = await axios.get<CategoryProps[]>(API_URL + '/categories');
+      const result = await axios.get<CategoryType[]>(API_URL + '/categories');
       setCategories(result.data);
     } catch (err) {
       console.log(err, 'error');
