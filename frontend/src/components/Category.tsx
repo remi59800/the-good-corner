@@ -8,7 +8,7 @@ export type CategoryType = {
 
 export const Category = ({ id, name }: CategoryType) => {
   return (
-    <Link href={`/categories/${id}/ads`} className='category-navigation-link'>
+    <Link href={`/categories/${id}`} className='category-navigation-link'>
       {name}
     </Link>
   );

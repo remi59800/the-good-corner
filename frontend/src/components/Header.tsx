@@ -1,11 +1,20 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { CategoryType } from './Category';
 import { Category } from './Category';
 import { useQuery } from '@apollo/client';
 import { queryAllCategories } from '@/graphql/queryAllCategories';
+import { useRouter } from 'next/router';
 
 export const Header = () => {
+  const [searchWord, setSearchWord] = useState('');
+  const router = useRouter();
+
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    router.push(`/?searchWord=${searchWord.trim()}`);
+  }
+
   const { data, error, loading } = useQuery<{ items: CategoryType[] }>(
     queryAllCategories
   );
@@ -20,8 +29,13 @@ export const Header = () => {
             <span className='desktop-long-label'>THE GOOD CORNER</span>
           </Link>
         </h1>
-        <form className='text-field-with-button'>
-          <input className='text-field main-search-field' type='search' />
+        <form className='text-field-with-button' onSubmit={onSubmit}>
+          <input
+            className='text-field main-search-field'
+            type='search'
+            value={searchWord}
+            onChange={(e) => setSearchWord(e.target.value)}
+          />
           <button className='button button-primary'>
             <svg
               aria-hidden='true'

@@ -8,11 +8,9 @@ export const queryAd = gql`
       title
       description
       picture
+      location
+      owner
       category {
-        id
-        name
-      }
-      tags {
         id
         name
       }

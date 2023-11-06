@@ -56,7 +56,7 @@ export class Ad extends BaseEntity {
   @Field(() => Category, { nullable: true })
   category!: Category;
 
-  @ManyToMany(() => Tag, (tag: { ads: any }) => tag.ads)
+  @ManyToMany(() => Tag, (tag) => tag.ads, { cascade: ['remove'] })
   // check with SQLite extension! If you forget this following line, the
   // pivot table won't be generated
   @JoinTable()
@@ -87,7 +87,7 @@ export class AdCreateInput {
   @Field(() => ObjectId)
   category!: ObjectId;
 
-  @Field(() => [ObjectId])
+  @Field(() => [ObjectId], { nullable: true })
   tags!: ObjectId[];
 }
 

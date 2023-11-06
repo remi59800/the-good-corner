@@ -1,9 +1,7 @@
-/* eslint-disable react/no-unescaped-entities */
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { AdType } from '@/components/AdCard';
-import axios from 'axios';
-import { API_URL } from '@/config';
+import { URL } from '@/config';
 import { useMutation, useQuery } from '@apollo/client';
 import { mutationDeleteAd } from '@/graphql/mutationDeleteAd';
 import { queryAd } from '@/graphql/queryAd';
@@ -22,21 +20,17 @@ export default function AdDetails() {
   const ad = data ? data.item : null;
 
   //Delete d'une ad
-  const [doDelete, { data: deleteData, error, loading }] = useMutation(
-    mutationDeleteAd,
-    {
-      refetchQueries: [queryAllAds],
-    }
-  );
+  const [doDelete] = useMutation(mutationDeleteAd, {
+    refetchQueries: [queryAllAds],
+  });
 
   const deleteAd = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    // event.stopPropagation();
     await doDelete({
       variables: {
         id: adId,
       },
     });
-    // router.push(API_URL);
+    router.push(URL);
   };
 
   const updateAd = () => {

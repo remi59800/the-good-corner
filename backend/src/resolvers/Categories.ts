@@ -32,7 +32,7 @@ export class CategoriesResolver {
   }
 
   @Mutation(() => Category)
-  async createAd(
+  async createCategory(
     @Arg('data', () => CategoryCreateInput) data: CategoryCreateInput
   ): Promise<Category> {
     try {

@@ -1,9 +1,6 @@
 import { Arg, ID, Int, Mutation, Query, Resolver } from 'type-graphql';
-import { Tag } from '../entities/Tag';
-import { StringValueNode } from 'graphql';
 import { Ad, AdCreateInput, AdUpdateInput, AdsWhere } from '../entities/Ad';
 import { validate } from 'class-validator';
-import { Category } from '../entities/Category';
 import { In, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm';
 import { merge } from '../utils';
 
