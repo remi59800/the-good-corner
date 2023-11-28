@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { AdCard, AdType } from './AdCard';
-import axios from 'axios';
-import { API_URL } from '@/config';
+import { queryAllAds } from '@/graphql/queryAllAds';
+import { useQuery } from '@apollo/client';
 
-export const RecentAds = () => {
-  const [ads, setAds] = useState<AdType[]>([]);
+type RecentAdsProps = {
+  categoryId?: number;
+  searchWord?: string;
+};
 
-  const fetchAds = async () => {
-    try {
-      const result = await axios.get<AdType[]>(API_URL + '/ads');
-      setAds(result.data);
-    } catch (err) {
-      console.log(err, 'error');
-    }
-  };
-
-  useEffect(() => {
-    fetchAds();
-  }, []);
+export const RecentAds = ({ categoryId, searchWord }: RecentAdsProps) => {
+  const { data } = useQuery<{ items: AdType[] }>(queryAllAds, {
+    variables: {
+      where: {
+        ...(categoryId ? { categoryIn: [categoryId] } : {}),
+        ...(searchWord ? { searchTitle: searchWord } : {}),
+      },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+  const ads = data ? data.items : [];
 
   const [totalPrice, setTotalPrice] = useState(0);
   const addToTotalPrice = (price: number) => {
@@ -37,6 +38,7 @@ export const RecentAds = () => {
               title={ad.title}
               picture={ad.picture}
               price={ad.price}
+              category={ad.category}
             ></AdCard>
             <button
               className='button'

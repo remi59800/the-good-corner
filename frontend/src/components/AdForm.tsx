@@ -1,19 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { CategoryProps } from './Category';
-import axios from 'axios';
-import { API_URL } from '@/config';
+import { CategoryType } from './Category';
+import { URL } from '@/config';
 import { useRouter } from 'next/router';
 import { AdType } from './AdCard';
+import { useMutation, useQuery } from '@apollo/client';
+import { queryAllCategories } from '@/graphql/queryAllCategories';
+import { mutationCreateAd } from '@/graphql/mutationCreateAd';
+import { queryAllAds } from '@/graphql/queryAllAds';
+import { mutationUpdateAd } from '@/graphql/mutationUpdateAd';
+import { queryAd } from '@/graphql/queryAd';
 
-type AdFormData = Omit<AdType, 'id'>;
+type AdFormData = {
+  title: string;
+  owner: string;
+  description: string;
+  price: number;
+  picture: string;
+  location: string;
+  category: { id: number } | null;
+};
 
 type AdFormProps = {
   ad?: AdType;
 };
 
 export const AdForm = ({ ad }: AdFormProps) => {
-  const [categories, setCategories] = useState<CategoryProps[]>([]);
   const [error, setError] = useState<'title' | 'price'>();
 
   const [title, setTitle] = useState('');
@@ -25,20 +37,31 @@ export const AdForm = ({ ad }: AdFormProps) => {
   const [categoryId, setCategoryId] = useState<null | number>(null);
 
   // fetch des categories pour la liste déroulante
-  const fetchCategories = async () => {
-    try {
-      const result = await axios.get<CategoryProps[]>(API_URL + '/categories');
-      setCategories(result.data);
-    } catch (err) {
-      console.log(err, 'error');
-    }
-  };
+  const {
+    data: categoriesData,
+    error: categoriesError,
+    loading: categoriesLoading,
+  } = useQuery<{ items: CategoryType[] }>(queryAllCategories);
+  const categories = categoriesData ? categoriesData.items : [];
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  // fetch des tags
+  // const {
+  //   data: tagsData,
+  //   error: tagsError,
+  //   loading: tagsLoading,
+  // } = useQuery<{ items: CategoryType[] }>(queryAllCategories);
+  // const tags = tagsData ? tagsData.items : [];
 
   const router = useRouter();
+
+  const [doCreate, { loading: createLoading }] = useMutation(mutationCreateAd, {
+    refetchQueries: [queryAllAds],
+  });
+  const [doUpdate, { loading: updateLoading }] = useMutation(mutationUpdateAd, {
+    refetchQueries: [queryAd, queryAllAds],
+  });
+
+  const loading = createLoading || updateLoading;
 
   // Soumission du formulaire avec envoi de la data à l'API avec le post ou le patch
   const submitForm = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -61,17 +84,19 @@ export const AdForm = ({ ad }: AdFormProps) => {
       setError('price');
     } else {
       if (!ad) {
-        const result = await axios.post(`${API_URL}/ads`, data);
-        if ('id' in result.data) {
+        const result = await doCreate({
+          variables: {
+            data: data,
+          },
+        });
+        if ('id' in result.data.item) {
           setTitle('');
           setOwner('');
           setDescription('');
           setPrice(0);
           setPicture('');
-          setPicture('');
+          setLocation('');
           setCategoryId(null);
-
-          // data.reset();
 
           toast.success('🚀 Offre publiée !', {
             position: 'bottom-center',
@@ -84,11 +109,13 @@ export const AdForm = ({ ad }: AdFormProps) => {
             theme: 'light',
           });
 
+          console.log(toast);
+
           setTimeout(() => {
-            router.replace(API_URL);
+            router.replace(`${URL}/ads/${result.data.item.id}`);
           }, 3700);
         } else {
-          toast.error('🦄 Wow so easy!', {
+          toast.error("L'offre n'a pas été publiée", {
             position: 'bottom-center',
             autoClose: 3000,
             hideProgressBar: false,
@@ -100,10 +127,15 @@ export const AdForm = ({ ad }: AdFormProps) => {
           });
         }
       } else {
-        const result = await axios.patch(`${API_URL}/ads${ad.id}`, data);
-        setTimeout(() => {
+        const result = await doUpdate({
+          variables: {
+            id: ad?.id,
+            data: data,
+          },
+        });
+        if (!result.errors?.length) {
           router.replace(`/ads/${ad.id}`);
-        }, 3700);
+        }
       }
     }
   };
@@ -196,7 +228,7 @@ export const AdForm = ({ ad }: AdFormProps) => {
         </select>
         <br></br>
         <br></br>
-        <button type='submit' className='button-submit'>
+        <button type='submit' disabled={loading} className='button-submit'>
           {ad ? "Modifier l'offre" : "Publier l'offre"}
         </button>
       </form>

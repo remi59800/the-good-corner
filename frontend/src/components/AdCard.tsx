@@ -1,6 +1,7 @@
-import { API_URL } from '@/config';
+import { URL } from '@/config';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { CategoryType } from './Category';
 
 export type AdType = {
   id: number;
@@ -10,7 +11,7 @@ export type AdType = {
   picture: string;
   location: string;
   price: number;
-  category?: { id: number } | null;
+  category: CategoryType | null;
 };
 
 export type AdCardType = Pick<
@@ -22,7 +23,7 @@ export const AdCard = ({ id, title, picture, price }: AdCardType) => {
   // Afficher les détails d'une offre
   const router = useRouter();
   const displayAdDetails = async () => {
-    router.push(`${API_URL}/ads/${id}`);
+    router.push(`${URL}/ads/${id}`);
   };
 
   return (

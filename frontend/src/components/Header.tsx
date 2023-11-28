@@ -1,25 +1,24 @@
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-import { CategoryProps } from './Category';
+import React, { useState } from 'react';
+import { CategoryType } from './Category';
 import { Category } from './Category';
-import { API_URL } from '@/config';
-import axios from 'axios';
+import { useQuery } from '@apollo/client';
+import { queryAllCategories } from '@/graphql/queryAllCategories';
+import { useRouter } from 'next/router';
 
 export const Header = () => {
-  const [categories, setCategories] = useState<CategoryProps[]>([]);
+  const [searchWord, setSearchWord] = useState('');
+  const router = useRouter();
 
-  const fetchCategories = async () => {
-    try {
-      const result = await axios.get<CategoryProps[]>(API_URL + '/categories');
-      setCategories(result.data);
-    } catch (err) {
-      console.log(err, 'error');
-    }
-  };
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    router.push(`/?searchWord=${searchWord.trim()}`);
+  }
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  const { data, error, loading } = useQuery<{ items: CategoryType[] }>(
+    queryAllCategories
+  );
+  const categories = data ? data.items : [];
 
   return (
     <header className='header'>
@@ -30,8 +29,13 @@ export const Header = () => {
             <span className='desktop-long-label'>THE GOOD CORNER</span>
           </Link>
         </h1>
-        <form className='text-field-with-button'>
-          <input className='text-field main-search-field' type='search' />
+        <form className='text-field-with-button' onSubmit={onSubmit}>
+          <input
+            className='text-field main-search-field'
+            type='search'
+            value={searchWord}
+            onChange={(e) => setSearchWord(e.target.value)}
+          />
           <button className='button button-primary'>
             <svg
               aria-hidden='true'
