@@ -26,16 +26,6 @@ type AdFormProps = {
 };
 
 export const AdForm = ({ ad }: AdFormProps) => {
-  const [error, setError] = useState<'title' | 'price'>();
-
-  const [title, setTitle] = useState('');
-  const [owner, setOwner] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState(0);
-  const [picture, setPicture] = useState('');
-  const [location, setLocation] = useState('');
-  const [categoryId, setCategoryId] = useState<null | number>(null);
-
   // fetch des categories pour la liste déroulante
   const {
     data: categoriesData,
@@ -51,6 +41,22 @@ export const AdForm = ({ ad }: AdFormProps) => {
   //   loading: tagsLoading,
   // } = useQuery<{ items: CategoryType[] }>(queryAllCategories);
   // const tags = tagsData ? tagsData.items : [];
+
+  const [error, setError] = useState<'title' | 'price'>();
+
+  const [title, setTitle] = useState('');
+  const [owner, setOwner] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState(0);
+  const [picture, setPicture] = useState('');
+  const [location, setLocation] = useState('');
+  const [categoryId, setCategoryId] = useState<null | number>(null);
+
+  useEffect(() => {
+    if (categories.length > 0 && !ad) {
+      setCategoryId(categories[0].id);
+    }
+  }, [categories, ad, categoryId]);
 
   const router = useRouter();
 
@@ -108,8 +114,6 @@ export const AdForm = ({ ad }: AdFormProps) => {
             progress: undefined,
             theme: 'light',
           });
-
-          console.log(toast);
 
           setTimeout(() => {
             router.replace(`${URL}/ads/${result.data.item.id}`);

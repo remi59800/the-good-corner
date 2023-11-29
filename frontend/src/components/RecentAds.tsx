@@ -29,7 +29,7 @@ export const RecentAds = ({ categoryId, searchWord }: RecentAdsProps) => {
   return (
     <>
       <h2>Annonces récentes</h2>
-      <p>Prix total : {totalPrice} €</p>
+      <p>Prix total du panier : {totalPrice} €</p>
       <section className='recent-ads'>
         {ads.map((ad) => (
           <div key={ad.id}>
@@ -44,7 +44,7 @@ export const RecentAds = ({ categoryId, searchWord }: RecentAdsProps) => {
               className='button'
               onClick={() => addToTotalPrice(ad.price)}
             >
-              Add price to total
+              Ajouter au panier
             </button>
           </div>
         ))}
