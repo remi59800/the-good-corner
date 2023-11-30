@@ -3,8 +3,6 @@ services:
     build: ./backend
     ports:
       - 3001:3001 #local:container
-    volumes:
-      - ./backend/src:/app/src
     env_file: ./backend/.env
   db:
     image: postgres
@@ -15,11 +13,7 @@ services:
       - /var/lib/postgresql/data
     env_file:
       - .env
-
-  # En dev, on lance le front à la main à côté
-  # frontend:
-  #   build: ./frontend
-  #   ports:
-  #     - 3000:3000 #local:container
-  #   volumes:
-  #     - ./frontend/src:/app/src
+  frontend:
+    build: ./frontend
+    ports:
+      - 3000:3000 #local:container
