@@ -27,7 +27,7 @@ export class TagsResolver {
   }
 
   @Mutation(() => Tag)
-  async createAd(
+  async createTag(
     @Arg('data', () => TagCreateInput) data: TagCreateInput
   ): Promise<Tag> {
     try {

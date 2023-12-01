@@ -40,7 +40,7 @@ export class Ad extends BaseEntity {
   @Field()
   price!: number;
 
-  @Column({ length: 100, nullable: true })
+  @Column({ length: 2048, nullable: true })
   @Field()
   picture!: string;
 

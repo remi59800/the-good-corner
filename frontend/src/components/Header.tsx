@@ -12,7 +12,8 @@ export const Header = () => {
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    router.push(`/?searchWord=${searchWord.trim()}`);
+    const searchQuery = searchWord.trim();
+    router.push(`/?searchWord=${searchQuery}`);
   }
 
   const { data, error, loading } = useQuery<{ items: CategoryType[] }>(
@@ -20,14 +21,20 @@ export const Header = () => {
   );
   const categories = data ? data.items : [];
 
+  function returnToHome(e: React.MouseEvent) {
+    e.preventDefault();
+    setSearchWord('');
+    router.push(`/`);
+  }
+
   return (
     <header className='header'>
       <div className='main-menu'>
         <h1>
-          <Link href='/' className='button logo link-button'>
+          <div className='button logo link-button' onClick={returnToHome}>
             <span className='mobile-short-label'>TGC</span>
             <span className='desktop-long-label'>THE GOOD CORNER</span>
-          </Link>
+          </div>
         </h1>
         <form className='text-field-with-button' onSubmit={onSubmit}>
           <input

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { CategoryType } from './Category';
 import { URL } from '@/config';
 import { useRouter } from 'next/router';
@@ -26,16 +27,6 @@ type AdFormProps = {
 };
 
 export const AdForm = ({ ad }: AdFormProps) => {
-  const [error, setError] = useState<'title' | 'price'>();
-
-  const [title, setTitle] = useState('');
-  const [owner, setOwner] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState(0);
-  const [picture, setPicture] = useState('');
-  const [location, setLocation] = useState('');
-  const [categoryId, setCategoryId] = useState<null | number>(null);
-
   // fetch des categories pour la liste déroulante
   const {
     data: categoriesData,
@@ -51,6 +42,15 @@ export const AdForm = ({ ad }: AdFormProps) => {
   //   loading: tagsLoading,
   // } = useQuery<{ items: CategoryType[] }>(queryAllCategories);
   // const tags = tagsData ? tagsData.items : [];
+
+  const [error, setError] = useState<'title' | 'price'>();
+  const [title, setTitle] = useState('');
+  const [owner, setOwner] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState(0);
+  const [picture, setPicture] = useState('');
+  const [location, setLocation] = useState('');
+  const [categoryId, setCategoryId] = useState<null | number>(null);
 
   const router = useRouter();
 
@@ -99,8 +99,8 @@ export const AdForm = ({ ad }: AdFormProps) => {
           setCategoryId(null);
 
           toast.success('🚀 Offre publiée !', {
-            position: 'bottom-center',
-            autoClose: 3000,
+            position: 'top-right',
+            autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -109,15 +109,13 @@ export const AdForm = ({ ad }: AdFormProps) => {
             theme: 'light',
           });
 
-          console.log(toast);
-
           setTimeout(() => {
             router.replace(`${URL}/ads/${result.data.item.id}`);
           }, 3700);
         } else {
           toast.error("L'offre n'a pas été publiée", {
-            position: 'bottom-center',
-            autoClose: 3000,
+            position: 'top-right',
+            autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -148,9 +146,11 @@ export const AdForm = ({ ad }: AdFormProps) => {
       setPrice(ad.price);
       setPicture(ad.picture);
       setLocation(ad.location);
-      setCategoryId(ad?.category ? ad.category.id : null);
+      setCategoryId(ad?.category ? ad.category.id : categories[0]?.id);
+    } else if (categories.length > 0) {
+      setCategoryId(categories[0].id);
     }
-  }, [ad]);
+  }, [ad, categories]);
 
   return (
     <>
@@ -233,8 +233,8 @@ export const AdForm = ({ ad }: AdFormProps) => {
         </button>
       </form>
       <ToastContainer
-        position='bottom-center'
-        autoClose={3000}
+        position='top-right'
+        autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
