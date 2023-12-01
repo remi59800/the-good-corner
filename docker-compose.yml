@@ -16,9 +16,10 @@ services:
     env_file:
       - .env
 
-  # En dev, on lance le front à la main à côté
+  # En dev, on lance le front à la main à côté, mais si besoin on peut tout lancer via le docker compose en décommentant ci-dessous
   # frontend:
   #   build: ./frontend
+  #   command: npm run dev
   #   ports:
   #     - 3000:3000 #local:container
   #   volumes:

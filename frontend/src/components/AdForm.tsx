@@ -146,7 +146,7 @@ export const AdForm = ({ ad }: AdFormProps) => {
       setPrice(ad.price);
       setPicture(ad.picture);
       setLocation(ad.location);
-      setCategoryId(ad?.category ? ad.category.id : null);
+      setCategoryId(ad?.category ? ad.category.id : categories[0]?.id);
     } else if (categories.length > 0) {
       setCategoryId(categories[0].id);
     }

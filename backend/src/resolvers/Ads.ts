@@ -9,7 +9,11 @@ export class AdsResolver {
   @Query(() => [Ad])
   async allAds(
     // On ajoute des filtres comme on pourrait le faire en SQL
-    @Arg('where', { nullable: true }) where?: AdsWhere
+    @Arg('where', { nullable: true }) where?: AdsWhere,
+    // take gère le nombre d'éléments par page
+    @Arg('take', () => Int, { nullable: true }) take?: number,
+    //skip permet de gérer à quelle page je suis(je loupe tel nombre d'éléments donc ça définit à quelle page je suis)
+    @Arg('skip', () => Int, { nullable: true }) skip?: number
   ): Promise<Ad[]> {
     const queryWhere: any = {};
 
@@ -45,6 +49,8 @@ export class AdsResolver {
     } */
 
     const ads = await Ad.find({
+      take: take ?? 50,
+      skip,
       where: queryWhere,
       //order,
       relations: {
@@ -53,6 +59,35 @@ export class AdsResolver {
       },
     });
     return ads;
+  }
+
+  @Query(() => Int)
+  async allAdsCount(
+    // On ajoute des filtres comme on pourrait le faire en SQL
+    @Arg('where', { nullable: true }) where?: AdsWhere
+  ): Promise<number> {
+    const queryWhere: any = {};
+
+    if (where?.categoryIn) {
+      queryWhere.category = { id: In(where.categoryIn) };
+    }
+
+    if (where?.searchTitle) {
+      queryWhere.title = Like(`%${where.searchTitle}%`);
+    }
+
+    if (where?.priceGte) {
+      queryWhere.price = MoreThanOrEqual(Number(where.priceGte));
+    }
+
+    if (where?.priceLte) {
+      queryWhere.price = LessThanOrEqual(Number(where.priceLte));
+    }
+
+    const count = await Ad.count({
+      where: queryWhere,
+    });
+    return count;
   }
 
   @Query(() => Ad, { nullable: true })
