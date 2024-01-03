@@ -6,10 +6,11 @@ import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import { AdsResolver } from './resolvers/Ads';
 import { CategoriesResolver } from './resolvers/Categories';
+import { UsersResolver } from './resolvers/Users';
 
 async function start() {
   const schema = await buildSchema({
-    resolvers: [TagsResolver, AdsResolver, CategoriesResolver],
+    resolvers: [TagsResolver, AdsResolver, CategoriesResolver, UsersResolver],
   });
 
   const server = new ApolloServer({
