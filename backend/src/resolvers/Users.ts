@@ -1,8 +1,19 @@
-import { Arg, ID, Int, Mutation, Query, Resolver } from 'type-graphql';
+import {
+  Arg,
+  Authorized,
+  Ctx,
+  ID,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+} from 'type-graphql';
 import { validate } from 'class-validator';
 import { User, UserCreateInput } from '../entities/User';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
+import Cookies from 'cookies';
+import { ContextType } from '../auth';
 
 @Resolver()
 export class UsersResolver {
@@ -18,6 +29,12 @@ export class UsersResolver {
       where: { id: id },
     });
     return user;
+  }
+
+  @Authorized()
+  @Query(() => User)
+  async me(@Ctx() context: ContextType): Promise<User> {
+    return context.user as User;
   }
 
   @Mutation(() => User)
@@ -47,6 +64,7 @@ export class UsersResolver {
 
   @Mutation(() => User, { nullable: true })
   async signin(
+    @Ctx() context: { req: any; res: any },
     @Arg('email') email: string,
     @Arg('password') password: string
   ): Promise<User | null> {
@@ -62,10 +80,18 @@ export class UsersResolver {
             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 2,
             userId: existingUser.id,
           },
-          '5e52b73c-765a-4684-b12f-91d6c107acbc'
+          process.env.JWT_SECRET || 'supersecret'
         );
 
-        console.log(token);
+        console.log('token', token);
+
+        // edit response headers to add set-cookie
+        const cookies = new Cookies(context.req, context.res);
+        cookies.set('token', token, {
+          httpOnly: true,
+          secure: false,
+          maxAge: 1000 * 60 * 60 * 24,
+        });
 
         return existingUser;
       } else {
