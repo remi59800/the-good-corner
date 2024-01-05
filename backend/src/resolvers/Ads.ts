@@ -16,7 +16,6 @@ import { ContextType } from '../auth';
 
 @Resolver()
 export class AdsResolver {
-  @Authorized()
   @Query(() => [Ad])
   async allAds(
     // On ajoute des filtres comme on pourrait le faire en SQL
@@ -73,7 +72,6 @@ export class AdsResolver {
     return ads;
   }
 
-  @Authorized()
   @Query(() => Int)
   async allAdsCount(
     // On ajoute des filtres comme on pourrait le faire en SQL
@@ -103,7 +101,6 @@ export class AdsResolver {
     return count;
   }
 
-  @Authorized()
   @Query(() => Ad, { nullable: true })
   async ad(@Arg('id', () => ID) id: number): Promise<Ad | null> {
     const ad = await Ad.findOne({

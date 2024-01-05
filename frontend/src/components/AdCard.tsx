@@ -1,23 +1,7 @@
 import { URL } from '@/config';
+import { AdCardType } from '@/types';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { CategoryType } from './Category';
-
-export type AdType = {
-  id: number;
-  title: string;
-  owner: string;
-  description: string;
-  picture: string;
-  location: string;
-  price: number;
-  category: CategoryType | null;
-};
-
-export type AdCardType = Pick<
-  AdType,
-  'id' | 'title' | 'picture' | 'price' | 'category'
->;
 
 export const AdCard = ({ id, title, picture, price }: AdCardType) => {
   // Afficher les détails d'une offre

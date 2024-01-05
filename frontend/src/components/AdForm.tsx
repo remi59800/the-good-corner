@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { CategoryType } from './Category';
 import { URL } from '@/config';
 import { useRouter } from 'next/router';
-import { AdType } from './AdCard';
 import { useMutation, useQuery } from '@apollo/client';
 import { queryAllCategories } from '@/graphql/queryAllCategories';
 import { mutationCreateAd } from '@/graphql/mutationCreateAd';
 import { queryAllAds } from '@/graphql/queryAllAds';
 import { mutationUpdateAd } from '@/graphql/mutationUpdateAd';
 import { queryAd } from '@/graphql/queryAd';
+import { AdType, CategoryType } from '@/types';
 
 type AdFormData = {
   title: string;

@@ -1,5 +1,11 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Authorized, Field, ID, InputType, ObjectType } from 'type-graphql';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Field, ID, InputType, ObjectType } from 'type-graphql';
 import { IsEmail, Matches } from 'class-validator';
 import { Ad } from './Ad';
 
