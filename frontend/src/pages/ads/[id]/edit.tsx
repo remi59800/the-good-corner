@@ -1,6 +1,6 @@
-import { AdType } from '@/components/AdCard';
 import { AdForm } from '@/components/AdForm';
 import { queryAd } from '@/graphql/queryAd';
+import { AdType } from '@/types';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import React from 'react';

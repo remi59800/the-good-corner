@@ -1,10 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-
-export type CategoryType = {
-  id: number;
-  name: string;
-};
+import { CategoryType } from '@/types';
 
 export const Category = ({ id, name }: CategoryType) => {
   return (

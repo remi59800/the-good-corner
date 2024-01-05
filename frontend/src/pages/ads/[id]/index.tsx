@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import { AdType } from '@/components/AdCard';
 import { URL } from '@/config';
 import { useMutation, useQuery } from '@apollo/client';
 import { mutationDeleteAd } from '@/graphql/mutationDeleteAd';
 import { queryAd } from '@/graphql/queryAd';
 import { queryAllAds } from '@/graphql/queryAllAds';
+import { AdType } from '@/types';
 
 export default function AdDetails() {
   const router = useRouter();

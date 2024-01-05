@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { AdCard, AdType } from './AdCard';
+import { AdCard } from './AdCard';
 import { queryAllAds } from '@/graphql/queryAllAds';
 import { gql, useQuery } from '@apollo/client';
+import { AdType } from '@/types';
 
 type RecentAdsProps = {
   categoryId?: number;

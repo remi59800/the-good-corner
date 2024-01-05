@@ -1,7 +1,4 @@
-import { Arg, ID, Int, Mutation, Query, Resolver } from 'type-graphql';
-import { Tag } from '../entities/Tag';
-import { StringValueNode } from 'graphql';
-import { Ad, AdCreateInput, AdUpdateInput } from '../entities/Ad';
+import { Arg, ID, Mutation, Query, Resolver } from 'type-graphql';
 import { validate } from 'class-validator';
 import {
   Category,
